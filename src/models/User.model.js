@@ -1,5 +1,7 @@
-const {Schema, model} = require('mongoose');
+const {Schema, model, Types} = require('mongoose');
+
 const EStatus = require('../enums/status.enums');
+const Basket = require('./Basket.model');
 
 const userSchema = new Schema({
     firstName: {
@@ -18,6 +20,11 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, 'Password is required'],
+    },
+    basket: {
+        type: Types.ObjectId,
+        required: true,
+        ref: Basket
     },
     status: {
         type: String,
