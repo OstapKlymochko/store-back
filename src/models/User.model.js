@@ -28,7 +28,8 @@ const userSchema = new Schema({
     },
     status: {
         type: String,
-        enum: EStatus
+        enum: EStatus,
+        default: 'not activated'
     }
 }, {
     versionKey: false,
