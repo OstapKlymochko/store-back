@@ -2,9 +2,10 @@
   "name": "store-back",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch\"",
+    "watch": "nodemon \"src/index.ts\" --watch \"./src\""
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,11 @@
     "mongoose": "^7.0.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "@types/bcrypt": "^5.0.0",
+    "@types/node": "^18.15.11",
+    "nodemon": "^2.0.22",
+    "rimraf": "^4.4.1",
+    "ts-node": "^10.9.1",
+    "tsc-watch": "^6.0.0"
   }
 }
