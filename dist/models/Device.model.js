@@ -5,6 +5,7 @@ const mongoose_1 = require("mongoose");
 const Type_model_1 = require("./Type.model");
 const Brand_model_1 = require("./Brand.model");
 const enums_1 = require("../enums");
+const Device_description_model_1 = require("./Device.description.model");
 const deviceSchema = new mongoose_1.Schema({
     title: {
         type: String,
@@ -39,8 +40,9 @@ const deviceSchema = new mongoose_1.Schema({
     },
     description: {
         type: mongoose_1.Types.ObjectId,
-        required: true
-    }
+        required: true,
+        ref: Device_description_model_1.DeviceDescription,
+    },
 }, {
     versionKey: false,
     timestamps: true

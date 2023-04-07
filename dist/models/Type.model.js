@@ -8,6 +8,10 @@ const typeSchema = new mongoose_1.Schema({
         type: String,
         enum: enums_1.EDeviceTypes,
         required: true
+    },
+    brands: {
+        type: [String],
+        required: true
     }
 }, {
     versionKey: false,

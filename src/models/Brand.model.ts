@@ -7,7 +7,8 @@ const brandSchema = new Schema({
         required: true
     },
     devices_types: {
-        type: [EDeviceTypes],
+        type: [String],
+        enum: EDeviceTypes,
         required: true,
     }
 }, {

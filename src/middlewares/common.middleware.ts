@@ -4,12 +4,6 @@ import {ObjectSchema} from "joi";
 
 import {ApiError} from "../error";
 
-import {IDevice} from "../interfaces";
-import {IUser} from "../interfaces/user.interface";
-import {IType} from "../interfaces/type.interface";
-import {IDeviceDesc} from "../interfaces/device.description.interface";
-import {IBrand} from "../interfaces/brand.interface";
-
 class CommonMiddleware {
     isBodyValid(validator: ObjectSchema) {
         return (req: Request, res: Response, next: NextFunction) => {
@@ -28,7 +22,7 @@ class CommonMiddleware {
     }
 
 
-    alreadyExistsHandler(model: Model<IUser | IType | IDeviceDesc | IDevice | IBrand>,
+    alreadyExistsHandler(model: Model<any>,
                          fieldName: string, from: 'body' | 'query' | 'params' = "body", dbField = "email") {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
