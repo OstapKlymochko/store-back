@@ -12,18 +12,9 @@ const descSchema = new Schema({
         type: Types.ObjectId,
         required: true,
     }
+}, {
+    versionKey: false,
+    timestamps: true
 });
 
 export const DeviceDescription = model('device_descriptions', descSchema);
-
-
-// firstName
-// "Anya"
-// lastName
-// "Velgus"
-// email
-// "anyavel@gmail.com"
-// password
-// "331"
-// status
-// "activated"

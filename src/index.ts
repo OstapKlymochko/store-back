@@ -5,11 +5,6 @@ import {ApiError} from "./error";
 import {authRouter} from './routers';
 import {configs} from "./configs";
 
-// const User = require('./models/User.model');
-// const DevDesc = require('./models/Device.description.model');
-// const Device = require('./models/Device.model');
-// const Brand = require('./models/Brand.model')
-
 const app = express();
 
 app.use(express.json());
@@ -19,7 +14,7 @@ app.use('/auth', authRouter);
 
 app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
     const status = err.status || 500;
-
+    // console.log(err);
     return res.status(status).json({
         message: err.message
     });

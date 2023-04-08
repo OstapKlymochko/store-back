@@ -1,7 +1,8 @@
 import {Router} from "express";
 
 import {authController} from "../controllers";
-import {commonMiddleware} from "../middlewares";
+import {commonMiddleware, authMiddleware} from "../middlewares";
+import {EActionTypes} from "../enums";
 import {User} from "../models";
 import {userValidator} from "../validators";
 
@@ -13,5 +14,13 @@ router.post('/register',
     commonMiddleware.alreadyExistsHandler(User, "email"),
     authController.register
 );
+router.put('/activate/:token', authMiddleware.checkActionToken(EActionTypes.activate), authController.activate);
 
+router.post('/refresh', authMiddleware.checkRefreshToken, authController.refresh)
+
+router.post('/login',
+    commonMiddleware.isBodyValid(userValidator.login),
+    commonMiddleware.notExistsHandler(User, "email"),
+    authController.login
+);
 export const authRouter = router;

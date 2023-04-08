@@ -5,10 +5,12 @@ import {Basket} from "./Basket.model";
 
 const userSchema = new Schema({
     firstName: {
-        type: String
+        type: String,
+        required: true
     },
     lastName: {
-        type: String
+        type: String,
+        required: true
     },
     email: {
         type: String,
@@ -29,7 +31,7 @@ const userSchema = new Schema({
     status: {
         type: String,
         enum: EStatus,
-        default: 'not activated'
+        default: EStatus.not_activated
     }
 }, {
     versionKey: false,

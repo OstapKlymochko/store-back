@@ -1,16 +1,19 @@
-import {Schema, model} from 'mongoose';
+import {Schema, model, Types} from 'mongoose';
 
 import {EDeviceTypes} from "../enums";
+import {Brand} from "./Brand.model";
 
 const typeSchema = new Schema({
     name: {
         type: String,
         enum: EDeviceTypes,
-        required: true
+        required: true,
+        unique: true
     },
     brands: {
-        type: [String],
-        required: true
+        type: [Types.ObjectId],
+        required: true,
+        ref: Brand
     }
 }, {
     versionKey: false,

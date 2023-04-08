@@ -1,15 +1,11 @@
 import {Schema, model} from 'mongoose';
-import {EDeviceTypes} from "../enums";
 
 const brandSchema = new Schema({
     name: {
         type: String,
-        required: true
-    },
-    devices_types: {
-        type: [String],
-        enum: EDeviceTypes,
         required: true,
+        index: true,
+        unique: true
     }
 }, {
     versionKey: false,

@@ -3,15 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Type = void 0;
 const mongoose_1 = require("mongoose");
 const enums_1 = require("../enums");
+const Brand_model_1 = require("./Brand.model");
 const typeSchema = new mongoose_1.Schema({
     name: {
         type: String,
         enum: enums_1.EDeviceTypes,
-        required: true
+        required: true,
+        unique: true
     },
     brands: {
-        type: [String],
-        required: true
+        type: [mongoose_1.Types.ObjectId],
+        required: true,
+        ref: Brand_model_1.Brand
     }
 }, {
     versionKey: false,

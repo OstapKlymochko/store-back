@@ -14,5 +14,8 @@ const descSchema = new mongoose_1.Schema({
         type: mongoose_1.Types.ObjectId,
         required: true,
     }
+}, {
+    versionKey: false,
+    timestamps: true
 });
 exports.DeviceDescription = (0, mongoose_1.model)('device_descriptions', descSchema);

@@ -6,10 +6,12 @@ const enums_1 = require("../enums");
 const Basket_model_1 = require("./Basket.model");
 const userSchema = new mongoose_1.Schema({
     firstName: {
-        type: String
+        type: String,
+        required: true
     },
     lastName: {
-        type: String
+        type: String,
+        required: true
     },
     email: {
         type: String,
@@ -30,7 +32,7 @@ const userSchema = new mongoose_1.Schema({
     status: {
         type: String,
         enum: enums_1.EStatus,
-        default: 'not activated'
+        default: enums_1.EStatus.not_activated
     }
 }, {
     versionKey: false,
