@@ -4,6 +4,7 @@ exports.User = void 0;
 const mongoose_1 = require("mongoose");
 const enums_1 = require("../enums");
 const Basket_model_1 = require("./Basket.model");
+const Device_model_1 = require("./Device.model");
 const userSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
@@ -33,6 +34,12 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         enum: enums_1.EStatus,
         default: enums_1.EStatus.not_activated
+    },
+    devices: {
+        type: mongoose_1.Types.ObjectId,
+        required: true,
+        default: [],
+        ref: Device_model_1.Device
     }
 }, {
     versionKey: false,

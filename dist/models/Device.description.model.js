@@ -9,6 +9,8 @@ const descSchema = new mongoose_1.Schema({
     },
     images: {
         type: [String],
+        required: true,
+        default: []
     },
     seller_id: {
         type: mongoose_1.Types.ObjectId,

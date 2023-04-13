@@ -26,7 +26,7 @@ const deviceSchema = new mongoose_1.Schema({
         enum: enums_1.EConditions
     },
     avatar: {
-        type: String
+        type: String,
     },
     deviceType: {
         type: mongoose_1.Types.ObjectId,

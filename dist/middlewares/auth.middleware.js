@@ -21,6 +21,23 @@ class AuthMiddleware {
             next(e);
         }
     }
+    async checkStatus(req, res, next) {
+        try {
+            const { jwtPayload: { _id } } = req.res.locals;
+            const user = await models_1.User.findById(_id);
+            switch (user.status) {
+                case enums_1.EStatus.not_activated:
+                    throw new error_1.ApiError('Please, verify your email', 403);
+                case enums_1.EStatus.blocked:
+                    throw new error_1.ApiError('Your account has been blocked!', 403);
+            }
+            req.res.locals.user = user;
+            next();
+        }
+        catch (e) {
+            next(e);
+        }
+    }
     async checkRefreshToken(req, res, next) {
         try {
             const refreshToken = req.get('Authorization');

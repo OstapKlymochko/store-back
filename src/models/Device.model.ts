@@ -4,8 +4,6 @@ import {Type} from './Type.model';
 import {Brand} from './Brand.model';
 import {EConditions} from "../enums";
 import {DeviceDescription} from "./Device.description.model";
-// import {User} from "./User.model";
-// import {DeviceDescription} from "./Device.description.model";
 
 const deviceSchema = new Schema({
         title: {
@@ -27,7 +25,7 @@ const deviceSchema = new Schema({
             enum: EConditions
         },
         avatar: {
-            type: String
+            type: String,
         },
         deviceType: {
             type: Types.ObjectId,

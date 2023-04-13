@@ -22,29 +22,30 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const express_fileupload_1 = __importDefault(require("express-fileupload"));
-const mongoose = __importStar(require("mongoose"));
-const routers_1 = require("./routers");
-const configs_1 = require("./configs");
-const app = (0, express_1.default)();
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, express_fileupload_1.default)());
-app.use('/auth', routers_1.authRouter);
-app.use('/device', routers_1.deviceRouter);
-app.use((err, req, res, next) => {
-    const status = err.status || 500;
-    console.log(err);
-    return res.status(status).json({
-        message: err.message
-    });
+exports.DeviceValidator = void 0;
+const Joi = __importStar(require("joi"));
+const enums_1 = require("../enums");
+class DeviceValidator {
+}
+_a = DeviceValidator;
+DeviceValidator.title = Joi.string().min(2).max(50).trim();
+DeviceValidator.price = Joi.number().min(0).max(1000000);
+DeviceValidator.condition = Joi.valid(...Object.values(enums_1.EConditions));
+DeviceValidator.avatar = Joi.object();
+DeviceValidator.type = Joi.valid(...Object.values(enums_1.EDeviceTypes));
+DeviceValidator.brand = Joi.string();
+DeviceValidator.descriptionData = Joi.string().min(10).max(500);
+DeviceValidator.images = Joi.array().max(15);
+DeviceValidator.createDevice = Joi.object({
+    title: _a.title.required(),
+    price: _a.price.required(),
+    condition: _a.condition.required(),
+    avatar: _a.avatar,
+    deviceType: _a.type.required(),
+    brand: _a.brand.required(),
+    descriptionData: _a.descriptionData.required(),
+    images: _a.images,
 });
-app.listen(configs_1.configs.PORT, async () => {
-    await mongoose.connect(configs_1.configs.DB_URL);
-    console.log(`Server has started on port ${configs_1.configs.PORT}`);
-});
+exports.DeviceValidator = DeviceValidator;

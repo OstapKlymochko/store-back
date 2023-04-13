@@ -1,5 +1,5 @@
 export interface IDeviceDesc {
-    _id?:string;
+    _id?: string;
     data: string;
     images?: string[];
     seller_id: string;

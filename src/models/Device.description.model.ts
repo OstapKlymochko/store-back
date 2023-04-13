@@ -7,6 +7,8 @@ const descSchema = new Schema({
     },
     images: {
         type: [String],
+        required: true,
+        default: []
     },
     seller_id: {
         type: Types.ObjectId,

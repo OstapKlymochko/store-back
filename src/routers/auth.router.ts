@@ -23,4 +23,5 @@ router.post('/login',
     commonMiddleware.notExistsHandler(User, "email"),
     authController.login
 );
+
 export const authRouter = router;

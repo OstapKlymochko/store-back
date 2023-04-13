@@ -1,13 +1,14 @@
 import {NextFunction, Request, Response} from "express";
 
 import {ApiError} from "../error";
-import {ActionToken, Token} from "../models";
+import {ActionToken, Token, User} from "../models";
 import {tokenServices} from "../services";
-import {EActionTypes, ETokenTypes} from "../enums";
+import {EActionTypes, EStatus, ETokenTypes} from "../enums";
 
 class AuthMiddleware {
     public async checkAccessToken(req: Request, res: Response, next: NextFunction) {
         try {
+
             const accessToken = req.get('Authorization');
 
             const jwtPayload = tokenServices.checkToken(accessToken);
@@ -19,6 +20,24 @@ class AuthMiddleware {
             }
 
             req.res.locals = {...req.res.locals, jwtPayload, tokenInfo};
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async checkStatus(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {jwtPayload: {_id}} = req.res.locals;
+            const user = await User.findById(_id);
+            switch (user.status) {
+                case EStatus.not_activated:
+                    throw new ApiError('Please, verify your email', 403);
+                case EStatus.blocked:
+                    throw new ApiError('Your account has been blocked!', 403);
+            }
+            req.res.locals.user = user;
 
             next();
         } catch (e) {
