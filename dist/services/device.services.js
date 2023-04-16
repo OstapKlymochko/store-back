@@ -9,21 +9,14 @@ const models_1 = require("../models");
 const error_1 = require("../error");
 const constants_1 = require("../constants");
 class DeviceServices {
-    async createDevice(device, descriptionId) {
+    async createDevice(device) {
         try {
-            const { deviceType, brand: brandName } = device;
-            const [type, brand] = await Promise.all([
-                models_1.Type.findOne({ name: deviceType }),
-                models_1.Brand.findOne({ name: brandName })
-            ]);
-            return await models_1.Device.create({
-                ...device,
-                deviceType: type._id,
-                brand: brand._id,
-                description: descriptionId
-            });
+            console.log(device);
+            console.log(models_1.Device.schema);
+            return await models_1.Device.create(device);
         }
         catch (e) {
+            console.log(e);
             throw new error_1.ApiError(e.message, e.status);
         }
     }
@@ -37,15 +30,12 @@ class DeviceServices {
     }
     async saveDeviceImages(deviceId, images, avatar) {
         try {
-            await Promise.all([
-                !!images.length && promises_1.default.mkdir(constants_1.photosPaths.device([deviceId])),
-                !!avatar && promises_1.default.mkdir(constants_1.photosPaths.avatar([deviceId]))
-            ]);
+            (!!images.length || !!avatar) && await promises_1.default.mkdir((0, constants_1.photosPath)([deviceId]));
             await Promise.all([
                 !!images.length && images.map(async (value) => {
-                    await value.mv(constants_1.photosPaths.device([deviceId, value.name]));
+                    await value.mv((0, constants_1.photosPath)([deviceId, value.name]));
                 }),
-                !!avatar && avatar.mv(constants_1.photosPaths.avatar([deviceId, avatar.name]))
+                !!avatar && avatar.mv((0, constants_1.photosPath)([deviceId, avatar.name]))
             ]);
         }
         catch (e) {

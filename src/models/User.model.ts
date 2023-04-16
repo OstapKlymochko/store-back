@@ -35,7 +35,7 @@ const userSchema = new Schema({
         default: EStatus.not_activated
     },
     devices: {
-        type: Types.ObjectId,
+        type: [Types.ObjectId],
         required: true,
         default: [],
         ref: Device

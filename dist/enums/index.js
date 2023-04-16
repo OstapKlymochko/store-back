@@ -16,7 +16,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./action.tokens.enum"), exports);
 __exportStar(require("./conditions.enum"), exports);
-__exportStar(require("./deviceTypes.enum"), exports);
+__exportStar(require("./device.types.enum"), exports);
 __exportStar(require("./email.actions.enum"), exports);
 __exportStar(require("./status.enums"), exports);
 __exportStar(require("./token.types.enum"), exports);

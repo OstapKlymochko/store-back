@@ -15,7 +15,7 @@ class AuthServices {
 
             const newUser = await User.create({
                 ...user,
-                password: hashedPassword
+                password: hashedPassword,
             });
 
             const token = tokenServices.generateActionToken({_id: newUser._id.toString(), firstName, lastName});

@@ -31,15 +31,16 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const mongoose = __importStar(require("mongoose"));
 const routers_1 = require("./routers");
 const configs_1 = require("./configs");
+const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, express_fileupload_1.default)());
+app.use(express_1.default.static(path_1.default.resolve(process.cwd(), 'src', 'images')));
 app.use('/auth', routers_1.authRouter);
 app.use('/device', routers_1.deviceRouter);
 app.use((err, req, res, next) => {
     const status = err.status || 500;
-    console.log(err);
     return res.status(status).json({
         message: err.message
     });

@@ -11,7 +11,6 @@ export class DeviceValidator {
     private static type = Joi.valid(...Object.values(EDeviceTypes));
     private static brand = Joi.string();
     private static descriptionData = Joi.string().min(10).max(500);
-
     private static images = Joi.array<UploadedFile>().max(15);
 
     static createDevice = Joi.object({

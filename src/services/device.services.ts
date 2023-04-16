@@ -2,27 +2,18 @@ import {UploadedFile} from "express-fileupload";
 import fs from "fs/promises";
 
 import {IDevice, IDeviceDesc} from "../interfaces";
-import {Brand, Device, DeviceDescription, Type} from "../models";
+import {Device, DeviceDescription} from "../models";
 import {ApiError} from "../error";
-import {photosPaths} from "../constants";
+import {photosPath} from "../constants";
 
 class DeviceServices {
-    public async createDevice(device: IDevice, descriptionId: string): Promise<any> {
+    public async createDevice(device: IDevice): Promise<any> {
         try {
-            const {deviceType, brand: brandName} = device;
-
-            const [type, brand] = await Promise.all([
-                Type.findOne({name: deviceType}),
-                Brand.findOne({name: brandName})
-            ]);
-
-            return await Device.create({
-                ...device,
-                deviceType: type._id,
-                brand: brand._id,
-                description: descriptionId
-            });
+            console.log(device);
+            console.log(Device.schema);
+            return await Device.create(device);
         } catch (e) {
+            console.log(e);
             throw new ApiError(e.message, e.status);
         }
     }
@@ -38,16 +29,13 @@ class DeviceServices {
     public async saveDeviceImages(deviceId: string, images?: UploadedFile[], avatar?: UploadedFile): Promise<void> {
         try {
 
-            await Promise.all([
-                !!images.length && fs.mkdir(photosPaths.device([deviceId])),
-                !!avatar && fs.mkdir(photosPaths.avatar([deviceId]))
-            ]);
+            (!!images.length || !!avatar) && await fs.mkdir(photosPath([deviceId]))
 
             await Promise.all([
                 !!images.length && images.map(async (value) => {
-                    await value.mv(photosPaths.device([deviceId, value.name]));
+                    await value.mv(photosPath([deviceId, value.name]));
                 }),
-                !!avatar && avatar.mv(photosPaths.avatar([deviceId, avatar.name]))
+                !!avatar && avatar.mv(photosPath([deviceId, avatar.name]))
             ]);
 
         } catch (e) {

@@ -2,8 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Device = void 0;
 const mongoose_1 = require("mongoose");
-const Type_model_1 = require("./Type.model");
-const Brand_model_1 = require("./Brand.model");
 const enums_1 = require("../enums");
 const Device_description_model_1 = require("./Device.description.model");
 const deviceSchema = new mongoose_1.Schema({
@@ -29,14 +27,13 @@ const deviceSchema = new mongoose_1.Schema({
         type: String,
     },
     deviceType: {
-        type: mongoose_1.Types.ObjectId,
+        type: String,
+        enum: enums_1.EDeviceTypes,
         required: true,
-        ref: Type_model_1.Type
     },
     brand: {
-        type: mongoose_1.Types.ObjectId,
+        type: String,
         required: true,
-        ref: Brand_model_1.Brand
     },
     description: {
         type: mongoose_1.Types.ObjectId,
@@ -47,4 +44,4 @@ const deviceSchema = new mongoose_1.Schema({
     versionKey: false,
     timestamps: true
 });
-exports.Device = (0, mongoose_1.model)('device', deviceSchema);
+exports.Device = (0, mongoose_1.model)('devices', deviceSchema);

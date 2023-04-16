@@ -17,7 +17,7 @@ class AuthServices {
             const hashedPassword = await bcrypt_1.default.hash(password, 5);
             const newUser = await models_1.User.create({
                 ...user,
-                password: hashedPassword
+                password: hashedPassword,
             });
             const token = token_services_1.tokenServices.generateActionToken({ _id: newUser._id.toString(), firstName, lastName });
             await Promise.all([

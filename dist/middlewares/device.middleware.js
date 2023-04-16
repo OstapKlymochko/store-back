@@ -7,7 +7,8 @@ const error_1 = require("../error");
 class DeviceMiddleware {
     async DeviceValidator(req, res, next) {
         try {
-            if (!await models_1.Brand.exists({ name: req.body?.brand })) {
+            const brand = await models_1.Brand.findOne({ name: req.body?.brand });
+            if (!brand) {
                 throw new error_1.ApiError('No such brand', 409);
             }
             const { error, value } = validators_1.DeviceValidator.createDevice.validate({

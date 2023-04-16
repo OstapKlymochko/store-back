@@ -36,7 +36,7 @@ const userSchema = new mongoose_1.Schema({
         default: enums_1.EStatus.not_activated
     },
     devices: {
-        type: mongoose_1.Types.ObjectId,
+        type: [mongoose_1.Types.ObjectId],
         required: true,
         default: [],
         ref: Device_model_1.Device

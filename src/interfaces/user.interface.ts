@@ -1,7 +1,7 @@
 import {EStatus} from "../enums";
-import * as mongoose from "mongoose";
+import {IDevice} from "./device.interface";
 
-export interface IUser extends mongoose.Document {
+export interface IUser {
     _id?: string;
     firstName: string;
     lastName: string;
@@ -9,4 +9,5 @@ export interface IUser extends mongoose.Document {
     password: string;
     basket?: string | { _id: string, items: string[] };
     status?: EStatus;
+    devices?: IDevice[];
 }

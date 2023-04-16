@@ -37,8 +37,8 @@ class AuthMiddleware {
                 case EStatus.blocked:
                     throw new ApiError('Your account has been blocked!', 403);
             }
-            req.res.locals.user = user;
 
+            req.res.locals.user = user;
             next();
         } catch (e) {
             next(e);
