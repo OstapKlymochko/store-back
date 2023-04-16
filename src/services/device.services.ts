@@ -10,7 +10,6 @@ class DeviceServices {
     public async createDevice(device: IDevice): Promise<any> {
         try {
             console.log(device);
-            console.log(Device.schema);
             return await Device.create(device);
         } catch (e) {
             console.log(e);
