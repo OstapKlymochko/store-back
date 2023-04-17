@@ -3,3 +3,4 @@ node_modules
 .idea
 package-lock.json
 store-back.iml
+/src/images

@@ -4,24 +4,27 @@ import {v4} from "uuid";
 
 import {deviceServices} from "../services";
 import {Device, User} from "../models";
-import {IDeviceResponse} from "../interfaces";
+import {IDevice, IDeviceResponse} from "../interfaces";
 import {photosPath} from "../constants";
+import {configs} from "../configs";
+import {ApiError} from "../error";
 
 class DeviceController {
     public async getAll(req: Request, res: Response, next: NextFunction): Promise<Response<IDeviceResponse[]>> {
         try {
-            const devices = await Device.find().lean();
+            const devices = await Device.find().lean().select(['-description', '-updatedAt']);
 
-            return res.json(devices.map(({_id, title, price, rating, condition, avatar}) => {
-                return {
-                    _id,
-                    title,
-                    price,
-                    rating,
-                    condition,
-                    avatar: avatar ? avatar : 'undefined'
-                }
-            }));
+            // return res.json(devices.map(({_id, title, price, rating, condition, avatar}) => {
+            //     return {
+            //         _id,
+            //         title,
+            //         price,
+            //         rating,
+            //         condition,
+            //         avatar,
+            //     }
+            // }));
+            return res.json(devices);
         } catch (e) {
             next(e);
         }
@@ -29,23 +32,36 @@ class DeviceController {
 
     public async getImg(req: Request, res: Response, next: NextFunction) {
         try {
-            const {deviceId, imgPath} = req.params;
-            return res.sendFile(photosPath([deviceId, imgPath]));
+            // console.log(req.query)
+            const {id, filename} = req.query
+            return res.sendFile(photosPath([id.toString(), filename.toString()]));
         } catch (e) {
+            console.log(e);
             next(e);
         }
     }
 
-    public async getById(req: Request, res: Response, next: NextFunction) {
+    public async getById(req: Request, res: Response, next: NextFunction): Promise<Response<IDevice>> {
         try {
             const {deviceId} = req.params;
-
-            const device = await Device.findById(deviceId);
-            console.log(device);
+            const device = await Device.findById(deviceId).populate({
+                path: 'description',
+                select: ['-updatedAt', '-createdAt'],
+                populate: {
+                    path: 'seller_id',
+                    model: 'user',
+                    select: ['-password', '-status', '-basket', '-updatedAt', '-createdAt']
+                }
+            }).select(['-createdAt']);
+            if (!device) {
+                throw new ApiError('Not exists', 403);
+            }
+            return res.json(device)
         } catch (e) {
             next(e);
         }
     }
+
     public async createDevice(req: Request, res: Response, next: NextFunction) {
         try {
             const start = Date.now();
@@ -56,24 +72,26 @@ class DeviceController {
                 }, jwtPayload: {_id}
             } = req.res.locals;
 
-            avatar ? avatar.name = v4() + '.jpeg' : avatar;
-            !!images.length ? images.forEach((i: UploadedFile) => i.name = v4() + '.jpeg') : images;
+            avatar ? avatar.name = v4() + '.' + avatar.mimetype.split('/')[1] : avatar;
+            !!images.length ? images.forEach((i: UploadedFile) => i.name = v4() + '.' + i.mimetype.split('/')[1]) : images;
 
             const {_id: descriptionId} = await deviceServices.createDeviceDescription({
                 data: descriptionData,
-                images: images.map((i: UploadedFile) => i.name),
+                images: images.map((i: UploadedFile) => `${configs.API_URL}/device/images?id=${_id}&filename=${i.name}`),
                 seller_id: _id
             });
 
             const newDevice = await deviceServices.createDevice({
                 title, condition, price, brand, deviceType,
-                avatar: avatar ? avatar.name : undefined,
+                avatar: avatar ?
+                    `${configs.API_URL}/device/images?id=${_id}&filename=${avatar.name}` :
+                    `${configs.API_URL}/device/images?id=default&filename=default.png`,
                 description: descriptionId
             });
 
             Promise.all([
                 User.findByIdAndUpdate(_id, {$push: {devices: newDevice._id}}),
-                deviceServices.saveDeviceImages(newDevice._id.toString(), images, avatar)
+                deviceServices.saveDeviceImages(_id, images, avatar)
             ]);
 
             console.log(Date.now() - start);

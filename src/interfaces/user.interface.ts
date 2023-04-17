@@ -11,3 +11,5 @@ export interface IUser {
     status?: EStatus;
     devices?: IDevice[];
 }
+
+export type IUserResponse = Omit<IUser, 'password' | 'status'>

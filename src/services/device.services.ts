@@ -1,5 +1,6 @@
 import {UploadedFile} from "express-fileupload";
 import fs from "fs/promises";
+import {existsSync} from 'fs'
 
 import {IDevice, IDeviceDesc} from "../interfaces";
 import {Device, DeviceDescription} from "../models";
@@ -9,7 +10,6 @@ import {photosPath} from "../constants";
 class DeviceServices {
     public async createDevice(device: IDevice): Promise<any> {
         try {
-            console.log(device);
             return await Device.create(device);
         } catch (e) {
             console.log(e);
@@ -27,8 +27,9 @@ class DeviceServices {
 
     public async saveDeviceImages(deviceId: string, images?: UploadedFile[], avatar?: UploadedFile): Promise<void> {
         try {
-
-            (!!images.length || !!avatar) && await fs.mkdir(photosPath([deviceId]))
+            if ((images.length || avatar) && !existsSync(photosPath([deviceId]))) {
+                await fs.mkdir(photosPath([deviceId]))
+            }
 
             await Promise.all([
                 !!images.length && images.map(async (value) => {

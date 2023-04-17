@@ -3,7 +3,6 @@ import {Schema, model, Types} from 'mongoose';
 import {EConditions, EDeviceTypes} from "../enums";
 import {DeviceDescription} from "./Device.description.model";
 
-console.log(EDeviceTypes);
 export const deviceSchema = new Schema({
         title: {
             type: String,
@@ -27,12 +26,12 @@ export const deviceSchema = new Schema({
             type: String,
         },
         deviceType: {
-            kind: String,
+            type: String,
             enum: EDeviceTypes,
             required: true,
         },
         brand: {
-            kind: String,
+            type: String,
             required: true,
         },
         description: {

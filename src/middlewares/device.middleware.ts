@@ -7,6 +7,9 @@ import {ApiError} from "../error";
 class DeviceMiddleware {
     public async DeviceValidator(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            if (!req.body?.brand) {
+                throw new ApiError('Brand is required', 409);
+            }
             const brand = await Brand.findOne({name: req.body?.brand});
             if (!brand) {
                 throw new ApiError('No such brand', 409);

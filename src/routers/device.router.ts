@@ -14,8 +14,9 @@ router.post('/', authMiddleware.checkAccessToken,
 
 router.get('/', deviceController.getAll)
 
+router.get('/images', deviceController.getImg)
+
 router.get('/:deviceId', commonMiddleware.isIdValid('deviceId'), deviceController.getById)
 
-router.get('/:deviceId/:imgPath',commonMiddleware.isIdValid('deviceId'), deviceController.getImg)
 
 export const deviceRouter = router;

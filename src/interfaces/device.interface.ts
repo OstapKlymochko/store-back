@@ -1,4 +1,4 @@
-import {EConditions/*, EDeviceTypes*/} from "../enums";
+import {EConditions, EDeviceTypes} from "../enums";
 import {IDeviceDesc} from "./device.description.interface";
 import {UploadedFile} from "express-fileupload";
 import {ObjectId} from 'mongoose';
@@ -10,9 +10,9 @@ export interface IDevice {
     rating?: number;
     condition: EConditions;
     avatar?: string | UploadedFile;
-    deviceType: string;
+    deviceType: EDeviceTypes;
     brand: string;
     description: string | IDeviceDesc | ObjectId;
 }
 
-export type IDeviceResponse = Omit<IDevice, 'type' | 'brand' | 'description'>;
+export type IDeviceResponse = Omit<IDevice, 'description'>;
