@@ -23,7 +23,6 @@ class DeviceController {
             return res.sendFile((0, constants_1.photosPath)([id.toString(), filename.toString()]));
         }
         catch (e) {
-            console.log(e);
             next(e);
         }
     }

@@ -15,5 +15,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./email.constants"), exports);
+__exportStar(require("./file.constants"), exports);
 __exportStar(require("./regexp.constants"), exports);
 __exportStar(require("./imgs.paths"), exports);
