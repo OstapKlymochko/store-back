@@ -17,3 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./auth.middleware"), exports);
 __exportStar(require("./common.middleware"), exports);
 __exportStar(require("./device.middleware"), exports);
+__exportStar(require("./file.middleware"), exports);

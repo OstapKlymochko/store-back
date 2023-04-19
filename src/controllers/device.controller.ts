@@ -14,16 +14,6 @@ class DeviceController {
         try {
             const devices = await Device.find().lean().select(['-description', '-updatedAt']);
 
-            // return res.json(devices.map(({_id, title, price, rating, condition, avatar}) => {
-            //     return {
-            //         _id,
-            //         title,
-            //         price,
-            //         rating,
-            //         condition,
-            //         avatar,
-            //     }
-            // }));
             return res.json(devices);
         } catch (e) {
             next(e);
@@ -32,11 +22,9 @@ class DeviceController {
 
     public async getImg(req: Request, res: Response, next: NextFunction) {
         try {
-            // console.log(req.query)
             const {id, filename} = req.query
             return res.sendFile(photosPath([id.toString(), filename.toString()]));
         } catch (e) {
-            console.log(e);
             next(e);
         }
     }
